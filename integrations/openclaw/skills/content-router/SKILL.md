@@ -22,12 +22,13 @@ This skill is an adapter. The repository CLI remains the source of truth.
 
 ## Commands
 
-Run from the repository root:
+The installer creates a workspace-scoped launcher connected to the repository.
+Run these commands from the OpenClaw workspace root:
 
 ```bash
-npm run check
-node src/cli.mjs index --records=examples/records --index=.data/index.json --semantic=e5
-node src/cli.mjs search --index=.data/index.json --query="<query>" --top-k=5
+node skills/content-router/run.mjs check
+node skills/content-router/run.mjs index --records=examples/records --index=.data/index.json --semantic=e5
+node skills/content-router/run.mjs search --index=.data/index.json --query="<query>" --top-k=5
 ```
 
 Return the JSON result without inventing records or scores.

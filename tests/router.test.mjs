@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { spawnSync } from 'node:child_process';
 import test from 'node:test';
 
 import { mockEmbedding } from '../src/lib/semantic.mjs';
@@ -70,4 +71,37 @@ test('records reject unsafe source protocols', () => {
     source: { url: 'file:///etc/passwd', platform: 'demo' },
     classification: { categories: ['ai_security'], facets: [], tags: [] },
   }), /http or https/);
+});
+
+test('records enforce the published JSON schema', () => {
+  assert.throws(() => validateRecord({
+    id: 'SEC_998',
+    title: 42,
+    summary: '',
+    source: { url: 'https://example.com/invalid', platform: 'demo' },
+    classification: { categories: [7], facets: [], tags: [] },
+    unexpected: true,
+  }), /schema validation failed/);
+});
+
+test('CLI rejects invalid top-k values', () => {
+  const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'content-router-top-k-'));
+  const indexPath = path.join(temporary, 'index.json');
+  try {
+    const build = spawnSync(process.execPath, [
+      'src/cli.mjs', 'index', '--records=examples/records',
+      `--index=${indexPath}`, '--semantic=mock',
+    ], { encoding: 'utf8' });
+    assert.equal(build.status, 0, build.stderr);
+    for (const value of ['-1', '1.5', 'NaN', '101']) {
+      const result = spawnSync(process.execPath, [
+        'src/cli.mjs', 'search', `--index=${indexPath}`,
+        '--query=cache', `--top-k=${value}`,
+      ], { encoding: 'utf8' });
+      assert.equal(result.status, 1);
+      assert.match(result.stderr, /integer between 1 and 100/);
+    }
+  } finally {
+    fs.rmSync(temporary, { recursive: true, force: true });
+  }
 });

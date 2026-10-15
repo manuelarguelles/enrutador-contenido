@@ -1,16 +1,26 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+import Ajv2020 from 'ajv/dist/2020.js';
+import addFormats from 'ajv-formats';
 
 import { recordText } from './text.mjs';
 
-const REQUIRED_KEYS = ['id', 'title', 'summary', 'source', 'classification'];
+const schemaPath = fileURLToPath(
+  new URL('../../schemas/content-record.schema.json', import.meta.url),
+);
+const schema = JSON.parse(fs.readFileSync(schemaPath, 'utf8'));
+const ajv = new Ajv2020({ allErrors: true, strict: true });
+addFormats(ajv);
+const validateSchema = ajv.compile(schema);
 
 export function validateRecord(record, source = '<memory>') {
-  for (const key of REQUIRED_KEYS) {
-    if (!(key in record)) throw new Error(`${source}: missing required field ${key}`);
-  }
-  if (!/^[A-Z][A-Z0-9_]*_[0-9]{3}$/.test(record.id)) {
-    throw new Error(`${source}: invalid id ${record.id}`);
+  if (!validateSchema(record)) {
+    const details = validateSchema.errors
+      .map((error) => `${error.instancePath || '/'} ${error.message}`)
+      .join('; ');
+    throw new Error(`${source}: schema validation failed: ${details}`);
   }
   const url = new URL(record.source.url);
   if (!['http:', 'https:'].includes(url.protocol)) {

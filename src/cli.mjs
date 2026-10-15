@@ -49,7 +49,7 @@ async function main() {
     const result = await buildIndex({
       records: options.records ?? 'examples/records',
       index: options.index ?? '.data/index.json',
-      semantic: options.semantic ?? process.env.CONTENT_ROUTER_SEMANTIC_MODE ?? 'mock',
+      semantic: options.semantic ?? process.env.CONTENT_ROUTER_SEMANTIC_MODE ?? 'e5',
       cacheDir: options['cache-dir'],
     });
     console.log(JSON.stringify({ action: 'index', ...result }, null, 2));
@@ -58,10 +58,14 @@ async function main() {
 
   if (command === 'search') {
     if (!options.query) throw new Error('search requires --query="..."');
+    const topK = Number(options['top-k'] ?? 5);
+    if (!Number.isSafeInteger(topK) || topK < 1 || topK > 100) {
+      throw new Error('--top-k must be an integer between 1 and 100');
+    }
     const result = await searchIndex({
       index: options.index ?? '.data/index.json',
       query: options.query,
-      topK: Number(options['top-k'] ?? 5),
+      topK,
       cacheDir: options['cache-dir'],
     });
     console.log(JSON.stringify(result, null, 2));
