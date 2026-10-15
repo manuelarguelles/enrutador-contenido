@@ -1,0 +1,72 @@
+{
+  "title": "Enrutador de Contenido — arquitectura portable BM25 + E5 + RRF",
+  "zones": [
+    {"id":"z_people","label":"Personas","x":20,"y":70,"w":180,"h":430,"color":"#c0504d","fill":"#fffafa"},
+    {"id":"z_interfaces","label":"Interfaces opcionales","x":220,"y":70,"w":300,"h":430,"color":"#e0a254","fill":"#fffaf0"},
+    {"id":"z_core","label":"Núcleo compartido — Node.js","x":540,"y":70,"w":850,"h":430,"color":"#2e8b57","fill":"#f8fcfa"},
+    {"id":"z_output","label":"Salida","x":1410,"y":70,"w":170,"h":430,"color":"#2f6fb5","fill":"#f7faff"},
+    {"id":"z_data","label":"Persistencia local","x":750,"y":520,"w":285,"h":110,"color":"#2f6fb5","fill":"#f7faff"},
+    {"id":"z_external","label":"Modelo fijado","x":1055,"y":520,"w":285,"h":110,"color":"#e5675a","fill":"#fff8f7"}
+  ],
+  "nodes": [
+    {"id":"user","label":"👤 Usuario / agente","x":40,"y":220,"kind":"human","w":140},
+    {"id":"terminal","label":"⌨ Terminal","x":245,"y":120,"kind":"edge","w":120},
+    {"id":"openclaw","label":"🦞 OpenClaw","x":245,"y":225,"kind":"edge","w":120},
+    {"id":"claude","label":"◆ Claude Code","x":245,"y":380,"kind":"edge","w":120},
+    {"id":"adapter","label":"🔌 Skills + launchers\nproject-scoped","x":390,"y":275,"kind":"svc","w":110,"h":86},
+    {"id":"cli","label":"⚙ CLI única\ncontent-router","x":565,"y":220,"kind":"svc","w":135,"h":72},
+    {"id":"schema","label":"🛡 JSON Schema +\nprotocolo URL","x":730,"y":220,"kind":"guard","w":145,"h":72},
+    {"id":"normalize","label":"🧹 Normalización\ny texto","x":900,"y":220,"kind":"svc","w":145,"h":72},
+    {"id":"bm25","label":"🔎 Ranking BM25","x":1070,"y":120,"kind":"svc","w":145,"h":72},
+    {"id":"e5","label":"🧠 E5 embeddings\n+ coseno","x":1070,"y":330,"kind":"svc","w":145,"h":72},
+    {"id":"rrf","label":"🔀 Fusión RRF\nk = 60","x":1230,"y":220,"kind":"svc","w":135,"h":72},
+    {"id":"results","label":"📦 Resultados JSON\nrazones + ranks","x":1425,"y":220,"kind":"data","w":140,"h":76},
+    {"id":"model","label":"🤗 Hugging Face · E5\nrevisión fijada","x":1095,"y":545,"kind":"ext","w":205,"h":64},
+    {"id":"records","label":"🧾 Registros JSON\npropios o sintéticos","x":390,"y":120,"kind":"data","w":110,"h":76},
+    {"id":"index","label":"🗄 Índice JSON local\ntexto + vectores","x":792,"y":545,"kind":"data","shape":"cyl","w":200,"h":64}
+  ],
+  "edges": [
+    {"from":"user","to":"terminal","label":"CLI directa"},
+    {"from":"user","to":"openclaw"},
+    {"from":"user","to":"claude"},
+    {"from":"openclaw","to":"adapter","label":"skill"},
+    {"from":"claude","to":"adapter","label":"skill"},
+    {"from":"terminal","to":"cli"},
+    {"from":"adapter","to":"cli","label":"run.mjs"},
+    {"from":"records","to":"cli","label":"index / check"},
+    {"from":"cli","to":"schema","label":"valida"},
+    {"from":"schema","to":"normalize","label":"registro seguro"},
+    {"from":"normalize","to":"bm25","label":"tokens"},
+    {"from":"normalize","to":"e5","label":"passage / query"},
+    {"from":"bm25","to":"rrf","label":"ranking léxico"},
+    {"from":"e5","to":"rrf","label":"ranking semántico"},
+    {"from":"rrf","to":"results","label":"top-k explicado"},
+    {"from":"model","to":"e5","label":"modelo local verificado","dashed":true},
+    {"from":"normalize","to":"index","label":"persiste índice","dashed":true}
+  ],
+  "badges": [
+    "user",
+    "openclaw",
+    "adapter",
+    "cli",
+    "schema",
+    "normalize",
+    "bm25",
+    "e5",
+    "rrf",
+    "results"
+  ],
+  "legend_y": 650,
+  "legend": [
+    "1  El usuario opera desde terminal o desde un agente.",
+    "2  OpenClaw y Claude Code son entradas opcionales; no contienen el motor.",
+    "3  Los launchers project-scoped enlazan de forma explícita al repositorio.",
+    "4  Una sola CLI gobierna validación, indexación y búsqueda.",
+    "5  JSON Schema y el control de URL rechazan registros incompatibles o inseguros.",
+    "6  El texto se normaliza una vez para los dos recuperadores.",
+    "7  BM25 produce el ranking léxico.",
+    "8  E5 fijado por revisión produce embeddings locales y ranking por coseno.",
+    "9  RRF combina ambos rankings de forma determinista.",
+    "10 Los resultados JSON conservan score, rank y razón de recuperación; la interfaz los devuelve al usuario."
+  ]
+}
