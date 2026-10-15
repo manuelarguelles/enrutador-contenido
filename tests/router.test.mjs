@@ -105,3 +105,19 @@ test('CLI rejects invalid top-k values', () => {
     fs.rmSync(temporary, { recursive: true, force: true });
   }
 });
+
+test('security gate rejects symlinks and oversized files', () => {
+  const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'content-router-security-'));
+  try {
+    fs.writeFileSync(path.join(temporary, 'large.bin'), Buffer.alloc(1_000_001));
+    fs.symlinkSync('/tmp', path.join(temporary, 'outside'));
+    const result = spawnSync(process.execPath, [
+      'scripts/security-check.mjs', temporary,
+    ], { encoding: 'utf8' });
+    assert.equal(result.status, 1);
+    assert.match(result.stderr, /symbolic links are not allowed/);
+    assert.match(result.stderr, /file exceeds the 1 MB review limit/);
+  } finally {
+    fs.rmSync(temporary, { recursive: true, force: true });
+  }
+});

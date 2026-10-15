@@ -7,7 +7,7 @@ import { reciprocalRankFusion } from './lib/rrf.mjs';
 import { lexicalRanking } from './lib/text.mjs';
 
 export async function buildIndex(options) {
-  const mode = options.semantic ?? 'mock';
+  const mode = options.semantic ?? 'e5';
   const documents = loadRecords(options.records);
   const embedder = await createEmbedder(mode, { cacheDir: options.cacheDir });
   const indexed = [];

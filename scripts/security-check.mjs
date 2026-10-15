@@ -3,8 +3,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
+import { fileURLToPath } from 'node:url';
 
-const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
+const defaultRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const root = path.resolve(process.argv[2] ?? defaultRoot);
 const ignoredDirectories = new Set(['.git', 'node_modules', '.data', '.model-cache']);
 const forbiddenBasenames = new Set([
   'IDENTITY.md',
@@ -21,6 +23,10 @@ function walk(directory) {
     if (ignoredDirectories.has(entry.name)) continue;
     const absolute = path.join(directory, entry.name);
     const relative = path.relative(root, absolute);
+    if (entry.isSymbolicLink()) {
+      findings.push(`${relative}: symbolic links are not allowed in the public release`);
+      continue;
+    }
     if (entry.isDirectory()) {
       if (forbiddenDirectoryNames.has(entry.name)) {
         findings.push(`${relative}: forbidden personal-state directory`);
@@ -33,7 +39,10 @@ function walk(directory) {
       findings.push(`${relative}: forbidden host-owned file`);
     }
     if (relative === 'scripts/security-check.mjs' || relative === 'SECURITY_AUDIT.md') continue;
-    if (fs.statSync(absolute).size > 1_000_000) continue;
+    if (fs.statSync(absolute).size > 1_000_000) {
+      findings.push(`${relative}: file exceeds the 1 MB review limit`);
+      continue;
+    }
     const content = fs.readFileSync(absolute, 'utf8');
     const checks = [
       [/\/Users\/[A-Za-z0-9._-]+\//, 'absolute macOS home path'],

@@ -119,9 +119,9 @@ Consulta el contrato completo en
 4. escaneo de archivos personales, rutas locales y credenciales evidentes.
 
 GitHub Actions repite la verificación en macOS y Ubuntu con Node 22 y 24,
-ejecuta `npm audit` y escanea el historial con Gitleaks. También existe un
-workflow manual para probar E5 real. Antes del primer release se valida además
-un clon limpio desde cero.
+ejecuta `npm audit`, escanea el historial con Gitleaks y prueba E5 real en cada
+push a `main` (también puede lanzarse manualmente). Antes del primer release se
+valida además un clon limpio desde cero.
 
 Lee [la arquitectura](docs/architecture.md), la [política de
 seguridad](SECURITY.md) y los [workflows](.github/workflows/).
