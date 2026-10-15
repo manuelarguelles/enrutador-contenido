@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "categories": [
+    "cache",
+    "kafka",
+    "redis",
+    "kubernetes",
+    "system_design",
+    "ci_cd",
+    "RAG",
+    "ai_security",
+    "ai_portfolio"
+  ]
+}

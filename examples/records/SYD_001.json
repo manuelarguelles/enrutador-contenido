@@ -1,0 +1,15 @@
+{
+  "id": "SYD_001",
+  "title": "Diseño de un acortador de URLs",
+  "summary": "Ejercicio de system design con particionado, caché y alta disponibilidad.",
+  "analysis": "Evalúa claves únicas, almacenamiento, balanceo y observabilidad.",
+  "source": {
+    "url": "https://example.com/content/url-shortener",
+    "platform": "demo"
+  },
+  "classification": {
+    "categories": ["system_design"],
+    "facets": ["scalability", "availability"],
+    "tags": ["sharding", "load-balancing"]
+  }
+}

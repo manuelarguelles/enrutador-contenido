@@ -1,0 +1,15 @@
+{
+  "id": "KFK_001",
+  "title": "Particiones y grupos de consumidores en Kafka",
+  "summary": "Explica paralelismo, offsets y rebalanceo de consumidores.",
+  "analysis": "Incluye criterios para elegir número de particiones y claves de mensajes.",
+  "source": {
+    "url": "https://example.com/content/kafka-consumers",
+    "platform": "demo"
+  },
+  "classification": {
+    "categories": ["kafka"],
+    "facets": ["streaming", "messaging"],
+    "tags": ["partitions", "consumer-groups", "offsets"]
+  }
+}

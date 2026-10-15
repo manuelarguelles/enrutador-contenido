@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "human_gate": {
+    "enabled": true,
+    "minimum_confidence": 0.75
+  },
+  "retrieval": {
+    "lexical": "bm25",
+    "semantic": "Xenova/multilingual-e5-small",
+    "fusion": "rrf",
+    "rrf_k": 60
+  }
+}

@@ -1,0 +1,20 @@
+name: E5 smoke test
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  e5:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node src/cli.mjs index --records=examples/records --index=.data/e5-index.json --semantic=e5
+      - run: node src/cli.mjs search --index=.data/e5-index.json --query="arquitectura de cache distribuida" --top-k=3

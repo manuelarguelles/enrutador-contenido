@@ -1,0 +1,15 @@
+{
+  "id": "RAG_001",
+  "title": "Recuperación híbrida para RAG",
+  "summary": "Combina recuperación léxica BM25 y embeddings multilingües.",
+  "analysis": "Los rankings se fusionan con Reciprocal Rank Fusion para conservar trazabilidad.",
+  "source": {
+    "url": "https://example.com/content/hybrid-rag",
+    "platform": "demo"
+  },
+  "classification": {
+    "categories": ["RAG"],
+    "facets": ["retrieval", "embeddings"],
+    "tags": ["bm25", "e5", "rrf"]
+  }
+}

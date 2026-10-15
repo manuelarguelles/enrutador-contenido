@@ -1,0 +1,15 @@
+{
+  "id": "CAC_001",
+  "title": "Patrones de caché distribuida",
+  "summary": "Comparación de cache-aside, write-through y write-behind para sistemas distribuidos.",
+  "analysis": "Describe invalidación, TTL, stampede y consistencia eventual.",
+  "source": {
+    "url": "https://example.com/content/cache-patterns",
+    "platform": "demo"
+  },
+  "classification": {
+    "categories": ["cache"],
+    "facets": ["distributed_systems", "performance"],
+    "tags": ["ttl", "invalidation", "cache-aside"]
+  }
+}

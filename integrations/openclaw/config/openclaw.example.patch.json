@@ -1,0 +1,6 @@
+{
+  "comment": "Optional example only. Merge manually; never replace an existing OpenClaw configuration.",
+  "environment": {
+    "CONTENT_ROUTER_REPO": "/path/to/enrutador-contenido"
+  }
+}

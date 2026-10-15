@@ -1,0 +1,15 @@
+{
+  "id": "SEC_001",
+  "title": "Defensas contra prompt injection",
+  "summary": "Controles para separar instrucciones, datos y permisos de herramientas.",
+  "analysis": "Propone allowlists, aprobación humana y registros auditables.",
+  "source": {
+    "url": "https://example.com/content/prompt-injection",
+    "platform": "demo"
+  },
+  "classification": {
+    "categories": ["ai_security"],
+    "facets": ["llm_security", "guardrails"],
+    "tags": ["prompt-injection", "tool-permissions"]
+  }
+}

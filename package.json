@@ -1,0 +1,26 @@
+{
+  "name": "enrutador-contenido",
+  "version": "0.1.0",
+  "description": "Enrutador portable de contenido con búsqueda híbrida BM25 + E5 y RRF.",
+  "type": "module",
+  "private": false,
+  "bin": {
+    "content-router": "src/cli.mjs"
+  },
+  "scripts": {
+    "check": "node src/cli.mjs check",
+    "demo": "node src/cli.mjs demo",
+    "index:demo": "node src/cli.mjs index --records=examples/records --index=.data/demo-index.json --semantic=mock",
+    "search:demo": "node src/cli.mjs search --index=.data/demo-index.json --query=arquitectura de cache distribuida --top-k=3",
+    "test": "node --test tests/*.test.mjs",
+    "security": "node scripts/security-check.mjs",
+    "verify": "npm run check && npm test && npm run demo && npm run security"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@huggingface/transformers": "4.3.1"
+  },
+  "license": "MIT"
+}

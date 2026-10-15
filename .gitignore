@@ -1,0 +1,21 @@
+node_modules/
+.data/
+.model-cache/
+.env
+.env.*
+!.env.example
+coverage/
+dist/
+*.log
+.DS_Store
+
+# OpenClaw/Claude Code state is host-owned, never project-owned.
+.openclaw/
+.claude/settings.local.json
+memory/
+sessions/
+MEMORY.md
+USER.md
+SOUL.md
+IDENTITY.md
+openclaw.json

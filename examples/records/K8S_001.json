@@ -1,0 +1,15 @@
+{
+  "id": "K8S_001",
+  "title": "Despliegues seguros en Kubernetes",
+  "summary": "Guía de readiness probes, rolling updates y límites de recursos.",
+  "analysis": "Relaciona salud, disponibilidad y estrategias de rollback.",
+  "source": {
+    "url": "https://example.com/content/kubernetes-rollout",
+    "platform": "demo"
+  },
+  "classification": {
+    "categories": ["kubernetes"],
+    "facets": ["containers", "reliability"],
+    "tags": ["deployment", "rollback", "probes"]
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/content-record.schema.json",
+  "title": "ContentRecord",
+  "type": "object",
+  "required": ["id", "title", "summary", "source", "classification"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]*_[0-9]{3}$" },
+    "title": { "type": "string", "minLength": 1 },
+    "summary": { "type": "string", "minLength": 1 },
+    "analysis": { "type": "string" },
+    "source": {
+      "type": "object",
+      "required": ["url", "platform"],
+      "additionalProperties": false,
+      "properties": {
+        "url": { "type": "string", "format": "uri" },
+        "platform": { "type": "string" }
+      }
+    },
+    "classification": {
+      "type": "object",
+      "required": ["categories", "facets", "tags"],
+      "additionalProperties": false,
+      "properties": {
+        "categories": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+        "facets": { "type": "array", "items": { "type": "string" } },
+        "tags": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}
