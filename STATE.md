@@ -2,7 +2,7 @@
 
 ## Current phase
 
-Construcción y validación del primer release público.
+Release `v0.1.0` validado y listo para su primer push público.
 
 ## Decisions
 
@@ -12,4 +12,14 @@ Construcción y validación del primer release público.
 
 ## Next action
 
-Ejecutar verificación local, escaneo de seguridad y clon limpio.
+Crear `manuelarguelles/enrutador-contenido`, hacer el primer push y comprobar
+los workflows de GitHub Actions.
+
+## Release evidence
+
+- `code-review`: READY tras corregir defaults, validación de esquema,
+  launchers y manejo de symlinks.
+- `code-security`: sin secretos ni vulnerabilidades reportables; Gitleaks
+  validó archivos e historial y `npm audit` reportó 0 vulnerabilidades.
+- Suite local: 13/13 pruebas.
+- Clon limpio: instalación, verificación, adaptadores y E5 real aprobados.

@@ -1,6 +1,6 @@
 # Roadmap
 
-## Phase 1 — Public starter [in progress]
+## Phase 1 — Public starter [completed]
 
 - Núcleo de recuperación híbrida.
 - Corpus sintético y pruebas deterministas.
