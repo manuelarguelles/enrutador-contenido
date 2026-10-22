@@ -4,7 +4,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 Convierte contenido guardado en un índice consultable mediante búsqueda
-híbrida: **BM25 + multilingual E5 + Reciprocal Rank Fusion (RRF)**.
+híbrida: **BM25 + multilingual E5 + Reciprocal Rank Fusion (RRF)**. También
+puede proponer la categoría principal mediante **Jev** y aplicar una política
+auditable: confirmar automáticamente o pedir revisión humana.
 
 El núcleo es una CLI portable de Node.js. OpenClaw y Claude Code son
 integraciones opcionales que invocan exactamente el mismo motor; ninguna
@@ -47,6 +49,48 @@ node src/cli.mjs search \
 
 `mock` es exclusivamente un modo de prueba. Para recuperación semántica real,
 usa `e5`.
+
+## Motor de decisiones con Jev
+
+Jev es opcional: la indexación, la búsqueda y toda la verificación local siguen
+funcionando sin credenciales. Para clasificar contenido:
+
+```bash
+export JEV_API_KEY="..."
+
+node src/cli.mjs classify \
+  --title="Búsqueda híbrida para RAG" \
+  --summary="Combina BM25, embeddings y RRF para recuperar contexto."
+```
+
+La salida incluye:
+
+- categoría y confianza elegidas por Jev;
+- dos alternativas ordenadas por probabilidad;
+- `decision: "auto"` cuando supera el umbral configurado;
+- `decision: "ask"` cuando hay duda, falta contenido, la categoría es
+  `uncategorized` o el umbral aún no está calibrado;
+- razón, modelo, proveedor y consumo reportado para auditoría.
+
+La política vive en [`config/decision-engine.json`](config/decision-engine.json).
+El valor `0.90` es un punto de partida conservador: debe recalibrarse con
+registros confirmados por una persona antes de habilitar decisiones autónomas
+en otro corpus. Si una decisión automática es corregida, vuelve el sistema a
+modo de confirmación humana hasta recalibrar.
+
+Registra esa degradación de forma explícita:
+
+```bash
+node src/cli.mjs demote \
+  --reason="La categoría automática fue corregida por una persona"
+```
+
+El comando cambia `threshold` a `null`; desde ese momento toda clasificación
+devuelve `decision: "ask"` hasta que el responsable recalibre el corpus y
+restaure deliberadamente un umbral numérico.
+
+Solo se envían a Jev el **título y el resumen**. No se envían `analysis`,
+credenciales, memoria, sesiones ni archivos originales.
 
 ## Un núcleo, dos integraciones
 
@@ -99,9 +143,18 @@ Ambos instaladores rechazan sobrescribir una integración existente.
     "platform": "demo"
   },
   "classification": {
-    "categories": ["data_engineering"],
+    "categories": ["system_design"],
     "facets": ["architecture"],
     "tags": ["cache"]
+  },
+  "routing": {
+    "provider": "jev",
+    "model": "jev-latest",
+    "suggested_category": "system_design",
+    "confidence": 0.93,
+    "decision": "auto",
+    "alternatives": [],
+    "reason": "confidence 0.93 meets threshold 0.9"
   }
 }
 ```
@@ -131,6 +184,8 @@ seguridad](SECURITY.md) y los [workflows](.github/workflows/).
 - La ingesta desde redes sociales no forma parte del repositorio público.
 - El índice es un JSON local: suficiente para la demo, no para alta concurrencia.
 - No se versionan modelos, índices generados ni contenido privado.
+- La precisión del juez depende de la taxonomía y del corpus; el starter no
+  sustituye una calibración con verdad humana.
 
 ## Licencia
 

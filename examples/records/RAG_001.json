@@ -11,5 +11,20 @@
     "categories": ["RAG"],
     "facets": ["retrieval", "embeddings"],
     "tags": ["bm25", "e5", "rrf"]
-  }
+  },
+  "routing": {
+    "provider": "jev",
+    "model": "jev-latest",
+    "suggested_category": "RAG",
+    "confidence": 0.96,
+    "decision": "auto",
+    "alternatives": [
+      { "category": "system_design", "confidence": 0.03 },
+      { "category": "uncategorized", "confidence": 0.01 }
+    ],
+    "reason": "Synthetic example: confidence meets the configured threshold"
+  },
+  "corrections": [
+    "Synthetic example: category confirmed automatically by Jev"
+  ]
 }

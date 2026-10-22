@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "provider": "jev",
+  "model": "jev-latest",
+  "base_url": "https://api.typesafe.ai",
+  "threshold": 0.9,
+  "minimum_content_characters": 40,
+  "timeout_ms": 90000,
+  "max_attempts": 3,
+  "alternative_count": 2,
+  "threshold_note": "Conservative starter value. Calibrate it against human-confirmed records before enabling autonomous decisions in another dataset.",
+  "criteria": {
+    "cache": "Cache strategies: invalidation, TTL, semantic cache, CDN, write-through and cache stampede.",
+    "kafka": "Apache Kafka: topics, partitions, consumer groups and event streaming.",
+    "redis": "Redis as an in-memory data store: data structures, persistence, pub/sub, cache and queues.",
+    "kubernetes": "Kubernetes orchestration: pods, deployments, YAML, Helm, operators and clusters.",
+    "system_design": "System design and distributed architecture: scalability, trade-offs, patterns, databases and interviews.",
+    "ci_cd": "Continuous integration and delivery: pipelines, GitHub Actions, deployments, staging and rollback.",
+    "RAG": "Retrieval-Augmented Generation: embeddings, vector databases, chunking, reranking and hybrid search.",
+    "ai_security": "AI security and risks: deepfakes, voice cloning, prompt injection, watermarking and jailbreaks.",
+    "ai_portfolio": "Projects, ideas and resources for building an AI and technology career or portfolio.",
+    "uncategorized": "The content does not clearly fit another category or there is not enough evidence to decide."
+  }
+}

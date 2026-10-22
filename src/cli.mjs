@@ -5,6 +5,12 @@ import os from 'node:os';
 import path from 'node:path';
 import process from 'node:process';
 
+import {
+  classifyWithJev,
+  demoteAfterHumanCorrection,
+  loadDecisionConfig,
+  writeDecisionConfig,
+} from './decision-engine.mjs';
 import { loadRecords } from './lib/records.mjs';
 import { buildIndex, searchIndex } from './router.mjs';
 
@@ -25,6 +31,9 @@ function usage() {
   check [--records=examples/records]
   index --records=examples/records --index=.data/index.json --semantic=mock|e5
   search --index=.data/index.json --query="..." [--top-k=5]
+  classify --title="..." --summary="..." [--config=config/decision-engine.json]
+  classify --file=examples/records/RAG_001.json [--config=config/decision-engine.json]
+  demote --reason="human corrected category" [--config=config/decision-engine.json]
   demo
 
 The mock semantic mode is deterministic and intended only for tests.
@@ -69,6 +78,29 @@ async function main() {
       cacheDir: options['cache-dir'],
     });
     console.log(JSON.stringify(result, null, 2));
+    return;
+  }
+
+  if (command === 'classify') {
+    let content;
+    if (options.file) content = JSON.parse(fs.readFileSync(path.resolve(options.file), 'utf8'));
+    else if (options.title || options.summary) content = { title: options.title, summary: options.summary };
+    else throw new Error('classify requires --file=<record.json> or --title and --summary');
+    const result = await classifyWithJev(content, {
+      configPath: options.config ?? 'config/decision-engine.json',
+    });
+    console.log(JSON.stringify(result, null, 2));
+    return;
+  }
+
+  if (command === 'demote') {
+    if (typeof options.reason !== 'string' || !options.reason.trim()) {
+      throw new Error('demote requires --reason="..."');
+    }
+    const configPath = options.config ?? 'config/decision-engine.json';
+    const config = demoteAfterHumanCorrection(loadDecisionConfig(configPath), options.reason);
+    const written = writeDecisionConfig(configPath, config);
+    console.log(JSON.stringify({ action: 'demote', config: written, threshold: null }, null, 2));
     return;
   }
 

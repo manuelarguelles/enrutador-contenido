@@ -18,3 +18,28 @@ The dashed trust boundaries separate people, optional runtime integrations,
 the shared Node.js core, model acquisition, local persistence, and output.
 Dashed arrows are supporting relationships; the primary request path reads
 from left to right.
+
+## Decision path
+
+Classification is a separate, optional path after content retrieval:
+
+```text
+title + summary
+      │
+      ▼
+Jev choice + probabilities
+      │
+      ▼
+deterministic policy ── confidence ≥ threshold ──► auto
+      │
+      └──────── low/unknown/uncalibrated ─────────► ask human
+```
+
+The provider proposes a category; repository code owns the final policy. This
+keeps the autonomy boundary deterministic, testable, and reversible. The
+engine fails closed when content is insufficient, the provider returns an
+unknown category, or no calibrated threshold exists. Alternative categories,
+confidence, reason, provider, model, and usage stay available as audit data.
+
+Only `title` and `summary` cross the third-party boundary. Retrieval records,
+analysis, source media, identities, sessions, and local credentials do not.

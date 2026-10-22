@@ -1,7 +1,7 @@
 {
   "name": "enrutador-contenido",
-  "version": "0.1.0",
-  "description": "Enrutador portable de contenido con búsqueda híbrida BM25 + E5 y RRF.",
+  "version": "0.2.0",
+  "description": "Enrutador portable con búsqueda híbrida BM25 + E5 + RRF y decisiones auditables con Jev.",
   "type": "module",
   "private": false,
   "bin": {

@@ -2,7 +2,10 @@
   "version": 1,
   "human_gate": {
     "enabled": true,
-    "minimum_confidence": 0.75
+    "decision_engine": "config/decision-engine.json",
+    "on_low_confidence": "ask",
+    "on_uncategorized": "ask",
+    "on_human_correction": "disable_auto_until_recalibrated"
   },
   "retrieval": {
     "lexical": "bm25",

@@ -7,8 +7,9 @@
 - Adaptadores OpenClaw y Claude Code.
 - CI y controles de seguridad.
 
-## Phase 2 — Extensiones [planned]
+## Phase 2 — Extensiones [in progress]
 
+- Motor de decisiones Jev con human gate auditable. [completed]
 - API/MCP opcional.
 - Persistencia SQLite/PostgreSQL.
 - Adaptadores adicionales.
