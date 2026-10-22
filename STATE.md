@@ -2,9 +2,8 @@
 
 ## Current phase
 
-Release `v0.2.0` lista para publicación: añade Jev como juez opcional de
-categoría y mantiene la decisión final en una política local, determinista y
-auditable.
+Release `v0.2.0` publicada: añade Jev como juez opcional de categoría y mantiene
+la decisión final en una política local, determinista y auditable.
 
 ## Decisions
 
@@ -17,7 +16,8 @@ auditable.
 
 ## Next action
 
-Publicar `v0.2.0` y comprobar GitHub Actions.
+Calibrar el umbral con un corpus humano propio antes de reutilizar la autonomía
+en otra taxonomía.
 
 ## Release evidence — v0.2.0
 
@@ -29,6 +29,9 @@ Publicar `v0.2.0` y comprobar GitHub Actions.
 - `npm pack --dry-run`: 45 archivos, 237118 bytes sin desempaquetar.
 - Clon limpio local: `npm ci` y `npm run verify` aprobados (25/25 pruebas).
 - `git diff --check`: sin errores.
+- Commit funcional: `725e7a2` (`feat: add auditable Jev decision engine`).
+- GitHub Actions: matriz CI Ubuntu/macOS Node 22/24 + Gitleaks aprobada.
+- GitHub Actions: smoke test E5 real aprobado.
 
 ## Release evidence — v0.1.0
 
